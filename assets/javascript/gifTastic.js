@@ -1,4 +1,22 @@
-var searchList = ["kayak", "canoe", "sup", "mtn bike", "hang glider"];
+var searchList = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang glider"];
+
+function displayButtons() {
+
+    for (var i = 0; i < searchList.length; i++) {
+      var myHobbiesDiv = $("<button>");
+      myHobbiesDiv.addClass("btn btn-primary");
+      myHobbiesDiv.text(searchList[i]);
+
+      // var p = $("<p>").text(searchList[i]);
+      // myHobbiesDiv.append(p); 
+      
+      $("#displayArea").prepend(myHobbiesDiv);
+
+
+    }
+
+}
+
 
 function callGiphy(searchWord) {
   var apiBase = "https://api.giphy.com/v1/gifs/search?q=";
@@ -27,7 +45,7 @@ function updateDisplay(data) {
     for (var i = 0; i < searchList.length; i++) {
         console.log(i);
         var giphyImg = $("<img>");
-        giphyImg.attr("src", data[0].url);
+        giphyImg.attr("src", data[i].images.fixed_height.url);
         console.log(data[0].url);
 
        
@@ -36,6 +54,8 @@ function updateDisplay(data) {
     
 }
 
-console.log(searchList[0]);
-callGiphy(searchList[0]);
+displayButtons();
+
+// console.log(searchList[2]);
+// callGiphy(searchList[2]);
 
