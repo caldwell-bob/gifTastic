@@ -1,4 +1,4 @@
-var searchList = ["kayak", "canoe", "sup"];
+var searchList = ["kayak", "canoe", "sup", "mtn bike", "hang glider"];
 
 function callGiphy(searchWord) {
   var apiBase = "https://api.giphy.com/v1/gifs/search?q=";
@@ -21,6 +21,19 @@ function callGiphy(searchWord) {
 
 function updateDisplay(data) {
     console.log(data);
+
+
+
+    for (var i = 0; i < searchList.length; i++) {
+        console.log(i);
+        var giphyImg = $("<img>");
+        giphyImg.attr("src", data[0].url);
+        console.log(data[0].url);
+
+       
+        $("#giphyGifs").append(giphyImg);
+      }
+    
 }
 
 console.log(searchList[0]);
