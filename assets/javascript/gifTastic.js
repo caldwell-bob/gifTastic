@@ -81,12 +81,13 @@ $("#addHobby").on("click", function(event) {
 })
 
 $(".btn-primary").on("click", function(event) {
+  // TODO why does this no longer seem to work after adding new button?
   console.log("done been clicked");
   var clickedId = this.id;
   var slicePoint = 0;
   var stringLength = clickedId.length;
 
-  
+  // TODO Test to ensure how this handles once we get into dbl digits
   console.log(clickedId);
   for (var i = 0; i < clickedId.length; i ++) {
     if (clickedId[i] === "_") {
@@ -103,8 +104,4 @@ $(".btn-primary").on("click", function(event) {
 
 console.log("Will this display before any clicks?")
 
-
-
-// console.log(searchList[2]);
-// callGiphy(searchList[2]);
 

@@ -3,5 +3,10 @@
 }
 
 #inputNewHobby{
+  
     width: 25%;
+}
+
+#form {
+    float: right;
 }
