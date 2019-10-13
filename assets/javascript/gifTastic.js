@@ -63,7 +63,7 @@ function updateDisplay(data) {
     var animateStateUrl = data[i].images.fixed_height_small.url;
     var rating = data[i].rating;
 
-    giphyRating.text(rating);
+    giphyRating.text("Rated: " + rating);
     console.log("Rating: " + rating);
     // giphyImg.attr("src", data[i].images.fixed_height.url);
     giphyImg.attr("src", stillStateUrl);
@@ -72,8 +72,13 @@ function updateDisplay(data) {
     giphyImg.attr("data-still", stillStateUrl);
     giphyImg.attr("data-animate", animateStateUrl);
     giphyImg.append(giphyRating);
+
+    giphyWraper.attr("class", "wrapper");
+    giphyWraper.attr("<br>");
+    giphyWraper.append(giphyRating);
+    giphyWraper.append(giphyImg);
     console.log(giphyImg);
-    $("#giphyGifs").prepend(giphyImg);
+    $("#giphyGifs").prepend(giphyWraper);
   }
   addGifEventListner();
 }
@@ -84,12 +89,14 @@ function addHobbyEventListener() {
     var newHobby = $("#newHobby")
       .val()
       .trim();
-    console.log(newHobby);
+    console.log(newHobby.length);
     // TODO add a check to ensure newHooby not in topics
-    topics.push(newHobby);
-    $("#displayArea").text(newHobby);
-    displayButtons();
-    addBtnPrimaryEventListen();
+    if (newHobby.length > 0) {
+      topics.push(newHobby);
+      $("#displayArea").text(newHobby);
+      displayButtons();
+      addBtnPrimaryEventListen();
+    }
   });
 }
 
