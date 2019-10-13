@@ -48,60 +48,51 @@ function callGiphy(searchWord) {
 
 function updateDisplay(data) {
     console.log(data);
-
-
-
     for (var i = 0; i < searchList.length; i++) {
         console.log(i);
         var giphyImg = $("<img>");
         giphyImg.attr("src", data[i].images.fixed_height.url);
         console.log(data[0].url);
-
-       
         $("#giphyGifs").append(giphyImg);
-      }
-    
+      }  
 }
 
-// TODO uncomment about below to get buttons back
-displayButtons();
+function addHobbyEventListener(){
+  $("#addHobby").on("click", function(event) {
+    event.preventDefault();
+    var newHobby = $("#newHobby").val().trim();
+    console.log(newHobby);
+    // TODO add a check to ensure newHooby not in searchList
+    searchList.push(newHobby)
+    $("#displayArea").text(newHobby);
+    displayButtons();
+    addBtnPrimaryEventListen();
+  })
+}
 
-$("#addHobby").on("click", function(event) {
-  event.preventDefault();
-  var newHobby = $("#newHobby").val().trim();
-  console.log(newHobby);
-  // TODO add a check to ensure newHooby not in searchList
-  searchList.push(newHobby)
-  
-  
-  $("#displayArea").text(newHobby);
-  
-  displayButtons();
-
-})
-
-$(".btn-primary").on("click", function(event) {
-  // TODO why does this no longer seem to work after adding new button?
-  console.log("done been clicked");
-  var clickedId = this.id;
-  var slicePoint = 0;
-  var stringLength = clickedId.length;
-
-  // TODO Test to ensure how this handles once we get into dbl digits
-  console.log(clickedId);
-  for (var i = 0; i < clickedId.length; i ++) {
-    if (clickedId[i] === "_") {
-      slicePoint = i;
+function addBtnPrimaryEventListen() {
+  $(".btn-primary").on("click", function(event) {
+    // TODO why does this no longer seem to work after adding new button?
+    console.log("done been clicked");
+    var clickedId = this.id;
+    var slicePoint = 0;
+    var stringLength = clickedId.length;
+    // TODO Test to ensure how this handles once we get into dbl digits
+    console.log(clickedId);
+    for (var i = 0; i < clickedId.length; i ++) {
+      if (clickedId[i] === "_") {
+        slicePoint = i;
+      }
     }
-  }
-  var res = clickedId.slice(slicePoint + 1, stringLength);
-  console.log(searchList[res]);
-  callGiphy(searchList[res]);
- 
-  
+    var res = clickedId.slice(slicePoint + 1, stringLength);
+    console.log(searchList[res]);
+    callGiphy(searchList[res]);
+  });
 
-});
+}
 
-console.log("Will this display before any clicks?")
 
+displayButtons();
+addHobbyEventListener();
+addBtnPrimaryEventListen();
 
