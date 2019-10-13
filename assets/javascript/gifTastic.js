@@ -1,35 +1,39 @@
-var topics = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang glider"];
+var topics = [
+  "sea kayaking",
+  "white water kayaking",
+  "scuba diving",
+  "canoe",
+  "stand up paddleboard",
+  "mtn bike",
+  "hang glider",
+  "parachuting"
+];
 var userClicked = "";
 
 function displayButtons() {
-    $("#displayArea").empty();
-    $("#newHobby").empty(); // TODO Why isn't this clearing out the input field?
-    emptyInput();
+  $("#displayArea").empty();
+  $("#newHobby").empty(); // TODO Why isn't this clearing out the input field?
+  emptyInput();
 
-    for (var i = 0; i < topics.length; i++) {
-      var myHobbiesDiv = $("<button>");
-      myHobbiesDiv.addClass("btn btn-primary");
-      // myHobbiesDiv.addClass("dataId-" + i);
+  for (var i = 0; i < topics.length; i++) {
+    var myHobbiesDiv = $("<button>");
+    myHobbiesDiv.addClass("btn btn-primary");
+    // myHobbiesDiv.addClass("dataId-" + i);
 
-      $(myHobbiesDiv).attr( 'id', "hobby_" + i );
-      // console.log(myHobbiesDiv);
+    $(myHobbiesDiv).attr("id", "hobby_" + i);
+    // console.log(myHobbiesDiv);
 
-      myHobbiesDiv.text(topics[i]);
-      $("#displayArea").prepend(myHobbiesDiv);
-
-
-    }
-
+    myHobbiesDiv.text(topics[i]);
+    $("#displayArea").prepend(myHobbiesDiv);
+  }
 }
 
-function emptyInput(){
+function emptyInput() {
   var inputVar = $("#newHobby");
   inputVar.empty();
 }
 
 function callGiphy(searchWord) {
-  // TODO update original image to be a static one
-  // TODO When clicked, change state (animted vs static)
   var apiBase = "https://api.giphy.com/v1/gifs/search?q=";
   var apiKey = "&api_key=9Hw25BnwKJXBMPa5oOn0PAMGvqWjDbiR";
   var apiLimit = "&limit=10";
@@ -46,35 +50,47 @@ function callGiphy(searchWord) {
     console.log(data.length);
     updateDisplay(data);
   });
-  // addGifEventListner();
 }
 
-
 function updateDisplay(data) {
-    console.log(data);
-    for (var i = 0; i < data.length; i++) {
-        console.log(i);
-        var giphyImg = $("<img>");
-        giphyImg.attr("src", data[i].images.fixed_height.url);
-        giphyImg.attr("class", "gif")
-        giphyImg.attr("data-state", "still");
-        console.log(data[0].url);
-        $("#giphyGifs").append(giphyImg);
-      }  
+  console.log(data);
+  for (var i = 0; i < data.length; i++) {
+    console.log(i);
+    var giphyWraper = $("<div>");
+    var giphyImg = $("<img>");
+    var giphyRating = $("<p>");
+    var stillStateUrl = data[i].images.fixed_height_small_still.url;
+    var animateStateUrl = data[i].images.fixed_height_small.url;
+    var rating = data[i].rating;
+
+    giphyRating.text(rating);
+    console.log("Rating: " + rating);
+    // giphyImg.attr("src", data[i].images.fixed_height.url);
+    giphyImg.attr("src", stillStateUrl);
+    giphyImg.attr("class", "gif");
+    giphyImg.attr("data-state", "still");
+    giphyImg.attr("data-still", stillStateUrl);
+    giphyImg.attr("data-animate", animateStateUrl);
+    giphyImg.append(giphyRating);
+    console.log(giphyImg);
+    $("#giphyGifs").prepend(giphyImg);
+  }
   addGifEventListner();
 }
 
-function addHobbyEventListener(){
+function addHobbyEventListener() {
   $("#addHobby").on("click", function(event) {
     event.preventDefault();
-    var newHobby = $("#newHobby").val().trim();
+    var newHobby = $("#newHobby")
+      .val()
+      .trim();
     console.log(newHobby);
     // TODO add a check to ensure newHooby not in topics
-    topics.push(newHobby)
+    topics.push(newHobby);
     $("#displayArea").text(newHobby);
     displayButtons();
     addBtnPrimaryEventListen();
-  })
+  });
 }
 
 function addBtnPrimaryEventListen() {
@@ -86,7 +102,7 @@ function addBtnPrimaryEventListen() {
     var stringLength = clickedId.length;
     // TODO Test to ensure how this handles once we get into dbl digits
     console.log(clickedId);
-    for (var i = 0; i < clickedId.length; i ++) {
+    for (var i = 0; i < clickedId.length; i++) {
       if (clickedId[i] === "_") {
         slicePoint = i;
       }
@@ -95,7 +111,6 @@ function addBtnPrimaryEventListen() {
     console.log(topics[res]);
     callGiphy(topics[res]);
   });
-
 }
 
 function addGifEventListner() {
@@ -118,9 +133,10 @@ function addGifEventListner() {
   });
 }
 
+function main() {
+  displayButtons();
+  addHobbyEventListener();
+  addBtnPrimaryEventListen();
+}
 
-displayButtons();
-addHobbyEventListener();
-addBtnPrimaryEventListen();
-
-
+main();
