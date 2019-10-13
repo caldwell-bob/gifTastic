@@ -1,4 +1,4 @@
-var searchList = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang glider"];
+var topics = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang glider"];
 var userClicked = "";
 
 function displayButtons() {
@@ -6,7 +6,7 @@ function displayButtons() {
     $("#newHobby").empty(); // TODO Why isn't this clearing out the input field?
     emptyInput();
 
-    for (var i = 0; i < searchList.length; i++) {
+    for (var i = 0; i < topics.length; i++) {
       var myHobbiesDiv = $("<button>");
       myHobbiesDiv.addClass("btn btn-primary");
       // myHobbiesDiv.addClass("dataId-" + i);
@@ -14,7 +14,7 @@ function displayButtons() {
       $(myHobbiesDiv).attr( 'id', "hobby_" + i );
       // console.log(myHobbiesDiv);
 
-      myHobbiesDiv.text(searchList[i]);
+      myHobbiesDiv.text(topics[i]);
       $("#displayArea").prepend(myHobbiesDiv);
 
 
@@ -28,9 +28,11 @@ function emptyInput(){
 }
 
 function callGiphy(searchWord) {
+  // TODO update original image to be a static one
+  // TODO When clicked, change state (animted vs static)
   var apiBase = "https://api.giphy.com/v1/gifs/search?q=";
   var apiKey = "&api_key=9Hw25BnwKJXBMPa5oOn0PAMGvqWjDbiR";
-  var apiLimit = "&limit=5";
+  var apiLimit = "&limit=10";
   // var searchString = "kayak";
   var queryURL = apiBase + searchWord + apiLimit + apiKey;
   console.log(queryURL);
@@ -44,17 +46,22 @@ function callGiphy(searchWord) {
     console.log(data.length);
     updateDisplay(data);
   });
+  // addGifEventListner();
 }
+
 
 function updateDisplay(data) {
     console.log(data);
-    for (var i = 0; i < searchList.length; i++) {
+    for (var i = 0; i < data.length; i++) {
         console.log(i);
         var giphyImg = $("<img>");
         giphyImg.attr("src", data[i].images.fixed_height.url);
+        giphyImg.attr("class", "gif")
+        giphyImg.attr("data-state", "still");
         console.log(data[0].url);
         $("#giphyGifs").append(giphyImg);
       }  
+  addGifEventListner();
 }
 
 function addHobbyEventListener(){
@@ -62,8 +69,8 @@ function addHobbyEventListener(){
     event.preventDefault();
     var newHobby = $("#newHobby").val().trim();
     console.log(newHobby);
-    // TODO add a check to ensure newHooby not in searchList
-    searchList.push(newHobby)
+    // TODO add a check to ensure newHooby not in topics
+    topics.push(newHobby)
     $("#displayArea").text(newHobby);
     displayButtons();
     addBtnPrimaryEventListen();
@@ -85,14 +92,35 @@ function addBtnPrimaryEventListen() {
       }
     }
     var res = clickedId.slice(slicePoint + 1, stringLength);
-    console.log(searchList[res]);
-    callGiphy(searchList[res]);
+    console.log(topics[res]);
+    callGiphy(topics[res]);
   });
 
+}
+
+function addGifEventListner() {
+  console.log("in addGifEventListener()");
+  $(".gif").on("click", function() {
+    console.log(".gif event listner is working");
+    console.log(this);
+    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    var state = $(this).attr("data-state");
+    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+    // Then, set the image's data-state to animate
+    // Else set src to the data-still value
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+  });
 }
 
 
 displayButtons();
 addHobbyEventListener();
 addBtnPrimaryEventListen();
+
 
