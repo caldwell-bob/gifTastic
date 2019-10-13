@@ -1,22 +1,23 @@
 var searchList = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang glider"];
+var userClicked = "";
 
 function displayButtons() {
 
     for (var i = 0; i < searchList.length; i++) {
       var myHobbiesDiv = $("<button>");
       myHobbiesDiv.addClass("btn btn-primary");
-      myHobbiesDiv.text(searchList[i]);
+      // myHobbiesDiv.addClass("dataId-" + i);
 
-      // var p = $("<p>").text(searchList[i]);
-      // myHobbiesDiv.append(p); 
-      
+      $(myHobbiesDiv).attr( 'id', "hobby_" + i );
+      console.log(myHobbiesDiv);
+
+      myHobbiesDiv.text(searchList[i]);
       $("#displayArea").prepend(myHobbiesDiv);
 
 
     }
 
 }
-
 
 function callGiphy(searchWord) {
   var apiBase = "https://api.giphy.com/v1/gifs/search?q=";
@@ -54,7 +55,32 @@ function updateDisplay(data) {
     
 }
 
+
 displayButtons();
+
+$(".btn-primary").on("click", function(event) {
+  console.log("done been clicked");
+  var clickedId = this.id;
+  var slicePoint = 0;
+  var stringLength = clickedId.length;
+
+  
+  console.log(clickedId);
+  for (var i = 0; i < clickedId.length; i ++) {
+    if (clickedId[i] === "_") {
+      slicePoint = i;
+    }
+  }
+  var res = clickedId.slice(slicePoint + 1, stringLength);
+  console.log(searchList[res]);
+  callGiphy(searchList[res]);
+ 
+  
+
+});
+
+
+
 
 // console.log(searchList[2]);
 // callGiphy(searchList[2]);
