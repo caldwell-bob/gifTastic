@@ -2,6 +2,9 @@ var searchList = ["kayak", "canoe", "stand up paddleboard", "mtn bike", "hang gl
 var userClicked = "";
 
 function displayButtons() {
+    $("#displayArea").empty();
+    $("#newHobby").empty(); // TODO Why isn't this clearing out the input field?
+    emptyInput();
 
     for (var i = 0; i < searchList.length; i++) {
       var myHobbiesDiv = $("<button>");
@@ -9,7 +12,7 @@ function displayButtons() {
       // myHobbiesDiv.addClass("dataId-" + i);
 
       $(myHobbiesDiv).attr( 'id', "hobby_" + i );
-      console.log(myHobbiesDiv);
+      // console.log(myHobbiesDiv);
 
       myHobbiesDiv.text(searchList[i]);
       $("#displayArea").prepend(myHobbiesDiv);
@@ -17,6 +20,11 @@ function displayButtons() {
 
     }
 
+}
+
+function emptyInput(){
+  var inputVar = $("#newHobby");
+  inputVar.empty();
 }
 
 function callGiphy(searchWord) {
@@ -55,8 +63,22 @@ function updateDisplay(data) {
     
 }
 
-
+// TODO uncomment about below to get buttons back
 displayButtons();
+
+$("#addHobby").on("click", function(event) {
+  event.preventDefault();
+  var newHobby = $("#newHobby").val().trim();
+  console.log(newHobby);
+  // TODO add a check to ensure newHooby not in searchList
+  searchList.push(newHobby)
+  
+  
+  $("#displayArea").text(newHobby);
+  
+  displayButtons();
+
+})
 
 $(".btn-primary").on("click", function(event) {
   console.log("done been clicked");
@@ -79,6 +101,7 @@ $(".btn-primary").on("click", function(event) {
 
 });
 
+console.log("Will this display before any clicks?")
 
 
 
